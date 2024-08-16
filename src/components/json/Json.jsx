@@ -12,6 +12,12 @@ const Json = () => {
   const [category, setCategorey] = useState(null);
   const [selectCategory, setSelectCategory] = useState("");
   const [total, setTotal] = useState(0);
+  const handDelate = (id) => {
+    const filterDelete = products.filter((product) => {
+      return product.id !== id;
+    });
+    setProducts(filterDelete);
+  };
   useEffect(() => {
     axios
       .get(`${API_URL}/products/category-list`)
@@ -95,6 +101,9 @@ const Json = () => {
           +
         </button>
       </div>
+      <button onClick={() => handDelate(product.id)} className="w-full">
+        Delete
+      </button>
     </div>
   ));
 
