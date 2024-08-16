@@ -101,7 +101,10 @@ const Json = () => {
           +
         </button>
       </div>
-      <button onClick={() => handDelate(product.id)} className="w-full">
+      <button
+        onClick={() => handDelate(product.id)}
+        className="w-full bg-red-600 text-[#fff]"
+      >
         Delete
       </button>
     </div>

@@ -21,7 +21,7 @@ const Login = () => {
           <input
             value={soarch}
             onChange={searchHand}
-            navigate={() => {
+            onFocus={() => {
               setSoarch("");
             }}
             className="w-full border pl-2 py-[7px] rounded-full shadow-sm outline-none"
@@ -33,7 +33,7 @@ const Login = () => {
             required
             value={input}
             onChange={btr}
-            navigate={() => {
+            onFocus={() => {
               setInput("");
             }}
             className="w-full border pl-2 py-[7px] rounded-full shadow-sm outline-none"
