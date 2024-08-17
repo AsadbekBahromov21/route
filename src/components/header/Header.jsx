@@ -3,10 +3,8 @@ import "./header.css";
 import navlogo from "../../assets/nav.png";
 import { RiMenu2Fill } from "react-icons/ri";
 import { IoSearchOutline } from "react-icons/io5";
-import axios from "axios";
+import axios from "../../api/Index";
 import { Link, NavLink } from "react-router-dom";
-
-const API_URL = "https://dummyjson.com";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [searchRes, setSearchRes] = useState(null);
@@ -16,7 +14,7 @@ const Header = () => {
   useEffect(() => {
     search.trim().length >= 3
       ? axios
-          .get(`${API_URL}/products/search`, {
+          .get(`/products/search`, {
             params: {
               q: search,
             },

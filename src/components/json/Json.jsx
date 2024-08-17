@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./json.css";
-import { LiaCartPlusSolid } from "react-icons/lia";
-import axios from "axios";
+
+import axios from "../../api/Index";
 import { data } from "autoprefixer";
 import { Link } from "react-router-dom";
-const API_URL = "https://dummyjson.com";
+import ProductCart from "../product/ProductCart";
+// const API_URL = "https://dummyjson.com";
 const Json = () => {
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -20,7 +21,7 @@ const Json = () => {
   };
   useEffect(() => {
     axios
-      .get(`${API_URL}/products/category-list`)
+      .get(`/products/category-list`)
       .then((res) => setCategorey(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -29,7 +30,7 @@ const Json = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API_URL}/products${selectCategory}`, {
+      .get(`/products${selectCategory}`, {
         params: {
           limit: 8 * semore,
         },
@@ -58,55 +59,6 @@ const Json = () => {
       <div className="h-4 bg-slate-200 w-full mt-3 rounded"></div>{" "}
       <div className="w-[200px] h-4 bg-slate-200 rounded mt-3"></div>{" "}
       <div className="w-[150px] h-4 bg-slate-200 mt-3 rounded"></div>
-    </div>
-  ));
-  const productItem = products?.map((product) => (
-    <div
-      key={product.id}
-      className="p-3 h-[398px] overflow-hidden api border flex flex-col gap-4 items-center justify-center rounded-lg shadow-md relative"
-    >
-      <Link to={`/product/${product.id}`}>
-        <img
-          src={product.images[0]}
-          alt=""
-          className="duration-300 image w-full h-52 object-contain hover:scale-105 absolute top-0 left-0"
-        />
-      </Link>
-      <div className="w-full h-52"></div>
-      <div className="flex flex-col gap-2 ">
-        <h3 className="text-center text-xl font-semibold">{product.brand}</h3>
-        <p className="text-red-500 text-sm font-medium ml-2">12%</p>
-        <p className="desck">{product.description}</p>
-        <p className="text-lg font-semibold ml-2">${product.price}</p>
-      </div>
-      <button className=" button w-12 border rounded-full bg-emerald-300 p-1 text-xs text-slate-100">
-        New
-      </button>
-      <button className="btr w-9 h-9 rounded-full border-none bg-yellow-400 ">
-        <LiaCartPlusSolid className="text-slate-100 text-2xl m-auto" />
-      </button>
-      <div className="ofset flex ">
-        <button
-          disabled={product.offset <= 0}
-          onClick={() => handleAddToCart(product.id, false)}
-          className="border w-6 h-6  flex items-center justify-center text-slate-400 rounded-md"
-        >
-          -
-        </button>
-        <button className="w-10">{product.offset}</button>
-        <button
-          onClick={() => handleAddToCart(product.id)}
-          className="border w-6 h-6  flex items-center justify-center text-slate-400 rounded-md"
-        >
-          +
-        </button>
-      </div>
-      <button
-        onClick={() => handDelate(product.id)}
-        className="w-full bg-red-600 text-[#fff]"
-      >
-        Delete
-      </button>
     </div>
   ));
 
@@ -141,12 +93,14 @@ const Json = () => {
         >
           All
         </li>
+
+        <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center justify-center">
+          {loading && skeletonItems}
+        </div>
         {categoreyItems}
       </ul>
-      <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center justify-center ">
-        {loading && skeletonItems}
-        {productItem}
-      </div>
+      <ProductCart products={products} />
+
       {8 * semore <= total ? (
         <button
           onClick={() => setSeemore((p) => p + 1)}

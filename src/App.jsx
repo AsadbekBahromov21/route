@@ -15,6 +15,7 @@ import Login from "./pages/login/Login";
 import Admin from "./pages/admin/Admin";
 import CreateProduct from "./pages/admin/CreateProduct";
 import Maninj from "./pages/admin/Maninj";
+import Auth from "./pages/auth/Auth";
 function App() {
   return (
     <>
@@ -27,9 +28,11 @@ function App() {
         <Route path="/Контакты" element={<Contact />} />
         <Route path="/product/:id" element={<Product />} />
         <Route path="/login" element={<Login />} />
-        <Route path="/Admin/*" element={<Admin />}>
-          <Route path="create" element={<CreateProduct />} />
-          <Route path="maninj" element={<Maninj />} />
+        <Route path="/" element={<Auth />}>
+          <Route path="Admin" element={<Admin />}>
+            <Route path="create" element={<CreateProduct />} />
+            <Route path="maninj" element={<Maninj />} />
+          </Route>
         </Route>
       </Routes>
       <Footer />

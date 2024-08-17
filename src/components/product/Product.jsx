@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from "../../api/Index";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { IoStarOutline } from "react-icons/io5";
 import { LiaCartPlusSolid } from "react-icons/lia";
 import { IoBarChartOutline } from "react-icons/io5";
 import { IoArrowRedo } from "react-icons/io5";
-const API_URL = "https://dummyjson.com";
+import ProductCart from "./ProductCart";
 const Product = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
@@ -20,7 +20,7 @@ const Product = () => {
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`${API_URL}/products`, {
+      .get(`/products`, {
         params: {
           limit: 4,
         },
@@ -49,51 +49,10 @@ const Product = () => {
       <div className="w-[150px] h-4 bg-slate-200 mt-3 rounded"></div>
     </div>
   ));
-  const productItem = products?.map((product) => (
-    <div
-      key={product.id}
-      className="p-3 h-[398px] overflow-hidden api border flex flex-col gap-4 items-center justify-center rounded-lg shadow-md relative mb-10"
-    >
-      <img
-        src={product.images[0]}
-        alt=""
-        className="duration-300 image w-full h-52 object-contain hover:scale-105 absolute top-0 left-0"
-      />
 
-      <div className="w-full h-52"></div>
-      <div className="flex flex-col gap-2 ">
-        <h3 className="text-center text-xl font-semibold">{product.brand}</h3>
-        <p className="text-red-500 text-sm font-medium ml-2">12%</p>
-        <p className="desck">{product.description}</p>
-        <p className="text-lg font-semibold ml-2">${product.price}</p>
-      </div>
-      <button className=" button w-12 border rounded-full bg-emerald-300 p-1 text-xs text-slate-100">
-        New
-      </button>
-      <button className="btr w-9 h-9 rounded-full border-none bg-yellow-400 ">
-        <LiaCartPlusSolid className="text-slate-100 text-2xl m-auto" />
-      </button>
-      <div className="ofset flex ">
-        <button
-          disabled={product.offset <= 0}
-          onClick={() => handleAddToCart(product.id, false)}
-          className="border w-6 h-6  flex items-center justify-center text-slate-400 rounded-md"
-        >
-          -
-        </button>
-        <button className="w-10">{product.offset}</button>
-        <button
-          onClick={() => handleAddToCart(product.id)}
-          className="border w-6 h-6  flex items-center justify-center text-slate-400 rounded-md"
-        >
-          +
-        </button>
-      </div>
-    </div>
-  ));
   useEffect(() => {
     axios
-      .get(`${API_URL}/products/${id}`)
+      .get(`/products/${id}`)
       .then((res) => setData(res.data))
       .catch((err) => console.log(err));
   }, []);
@@ -165,8 +124,8 @@ const Product = () => {
       </div>
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center justify-center ">
         {loading && skeletonItems}
-        {productItem}
       </div>
+      <ProductCart products={products} />
     </div>
   );
 };
