@@ -2,35 +2,31 @@ import axios from "../../api/Index";
 import React, { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import { IoStarOutline } from "react-icons/io5";
-import { LiaCartPlusSolid } from "react-icons/lia";
 import { IoBarChartOutline } from "react-icons/io5";
 import { IoArrowRedo } from "react-icons/io5";
 import ProductCart from "./ProductCart";
 const Product = () => {
   const { id } = useParams();
   const [data, setData] = useState(null);
-  const [cart, setCart] = useState(0);
   const [products, setProducts] = useState(null);
   const [loading, setLoading] = useState(false);
-
+  const handDelate = (id) => {
+    const filterDelete = products.filter((product) => {
+      return product.id !== id;
+    });
+    setProducts(filterDelete);
+  };
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
-
+  }, [id]);
   useEffect(() => {
     setLoading(true);
     axios
-      .get(`/products`, {
-        params: {
-          limit: 4,
-        },
-      })
-      .then((res) => {
-        setProducts(res.data.products.map((item) => ({ ...item, offset: 0 })));
-      })
+      .get(`/products/${id}`)
+      .then((res) => setData(res.data))
       .catch((err) => console.log(err))
       .finally(() => setLoading(false));
-  }, []);
+  }, [id]);
   const handleAddToCart = (id, positive = true) => {
     setProducts((prev) =>
       prev.map((item) => {
@@ -52,11 +48,11 @@ const Product = () => {
 
   useEffect(() => {
     axios
-      .get(`/products/${id}`)
-      .then((res) => setData(res.data))
+      .get(`/products/category/${data?.category}`, { params: { limit: 4 } })
+      .then((res) => setProducts(res.data.products))
       .catch((err) => console.log(err));
-  }, []);
-  console.log(data);
+  }, [data]);
+  // console.log(data);
 
   return (
     <div className="container mx-auto">
@@ -125,7 +121,11 @@ const Product = () => {
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 items-center justify-center ">
         {loading && skeletonItems}
       </div>
-      <ProductCart products={products} />
+      <ProductCart
+        products={products}
+        handDelate={handDelate}
+        handleAddToCart={handleAddToCart}
+      />
     </div>
   );
 };

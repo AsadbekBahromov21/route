@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { LiaCartPlusSolid } from "react-icons/lia";
-const ProductCart = ({ products, handleAddToCart }) => {
+const ProductCart = ({ products, handleAddToCart, handDelate }) => {
   const productItem = products?.map((product) => (
     <div
       key={product.id}

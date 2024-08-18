@@ -99,7 +99,11 @@ const Json = () => {
         </div>
         {categoreyItems}
       </ul>
-      <ProductCart products={products} />
+      <ProductCart
+        products={products}
+        handDelate={handDelate}
+        handleAddToCart={handleAddToCart}
+      />
 
       {8 * semore <= total ? (
         <button
